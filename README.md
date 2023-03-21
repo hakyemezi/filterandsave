@@ -8,12 +8,13 @@ This is a Streamlit app that allows users to upload an Excel, CSV or JSON file a
 
 ### Prerequisites
 Python 3.7+
+
 Streamlit 1.0+
 
 ### Installation
 Clone the repository:
 ```sh
-git clone https://github.com/YOUR_USERNAME/YOUR_REPOSITORY.git
+git clone https://github.com/hakyemezi/filterandsave.git
 ```
 Navigate to the cloned repository
 ```sh
