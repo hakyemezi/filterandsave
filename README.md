@@ -18,7 +18,7 @@ git clone https://github.com/hakyemezi/filterandsave.git
 ```
 Navigate to the cloned repository
 ```sh
-cd YOUR_REPOSITORY
+cd https://github.com/hakyemezi/filterandsave.git
 ```
 Install the required Python libraries:
 ```sh
@@ -27,7 +27,7 @@ pip install -r requirements.txt
 ### Usage
 1.	Start the app:
 ```sh
-streamlit run app.py
+streamlit run filterandsave.py
 ```
 2.	Upload an Excel, CSV or JSON file.
 3.	Select the column you want to filter on.
