@@ -36,5 +36,5 @@ streamlit run app.py
 
 ### ## Demo
 
-A demo of this project is available on https://hakyemezi-filterandsave-filterandsave-jukq50.streamlit.app/
+A demo of this project is available on https://hakyemezi-filterandsave.streamlit.app
 
