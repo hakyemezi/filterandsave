@@ -11,6 +11,10 @@ Python 3.7+
 
 Streamlit 1.0+
 
+Pandas 1.5+
+
+Openpyxl 3.0+
+
 ### Installation
 Clone the repository:
 ```sh
