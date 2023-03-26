@@ -8,7 +8,19 @@ uploaded_file = st.file_uploader("Upload Excel / CSV / JSON file", type=["xlsx",
 
 # Create a listbox on the screen
 if uploaded_file is not None:
-    df = pd.read_excel(uploaded_file)
+    
+    # Specify the type of selected file
+    file_type = os.path.splitext(uploaded_file.name)[1]
+    
+    # Determine the appropriate read function according to the type of selected file
+    if file_type == ".xlsx":
+        df = pd.read_excel(uploaded_file)
+    elif file_type == ".csv":
+        df = pd.read_csv(uploaded_file)
+    elif file_type == ".json":
+        df = pd.read_json(uploaded_file)    
+    
+    # Process the dataframe as needed
     column_list = list(df.columns)
     selected_column = st.selectbox("Select the column you want to process:", column_list)
 
