@@ -45,6 +45,6 @@ if st.button("Start"):
        # st.markdown(f"### [Download the file](filtered_data.zip)")
 
         # Delete the created files
-        for file in file_paths:
-            os.remove(file)
-        os.remove("filtered_data.zip")
+       # for file in file_paths:
+        #    os.remove(file)
+        # os.remove("filtered_data.zip")
