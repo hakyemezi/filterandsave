@@ -7,6 +7,8 @@
 [![License: MIT](https://img.shields.io/badge/license-MIT-green)](LICENSE)
 [![Languages](https://img.shields.io/badge/interface-6%20languages-blueviolet)](#languages)
 
+**🇬🇧 English** · [🇹🇷 Türkçe](README.tr.md) · [🇫🇷 Français](README.fr.md) · [🇩🇪 Deutsch](README.de.md) · [🇪🇸 Español](README.es.md) · [🇮🇹 Italiano](README.it.md)
+
 You have a sales sheet with 40,000 rows and a `region` column, and you need one file per region to send to each office. In Excel that is a pivot, a filter, a copy, a paste and a save — forty times. Here it is a drag, a click and a download.
 
 **▶️ [Open the app](https://hakyemezi-filterandsave.streamlit.app)** — drop a file in, no sign up.
@@ -72,33 +74,20 @@ Everything is built in memory, so nothing is written to disk on the server and c
 
 The interface is translated into six languages. All six are listed with their flags in the sidebar, so a visitor can see their own language without opening a menu:
 
-| | |
-|---|---|
-| 🇬🇧 **English** | Split a spreadsheet by column |
-| 🇹🇷 **Türkçe** | Tabloyu sütuna göre böl |
-| 🇫🇷 **Français** | Diviser un tableau par colonne |
-| 🇩🇪 **Deutsch** | Tabelle nach Spalte aufteilen |
-| 🇪🇸 **Español** | Dividir una hoja por columna |
-| 🇮🇹 **Italiano** | Dividere un foglio per colonna |
+| Language | In the app | This page |
+|---|---|---|
+| 🇬🇧 **English** | Split a spreadsheet by column | [README.md](README.md) |
+| 🇹🇷 **Türkçe** | Tabloyu sütuna göre böl | [README.tr.md](README.tr.md) |
+| 🇫🇷 **Français** | Diviser un tableau par colonne | [README.fr.md](README.fr.md) |
+| 🇩🇪 **Deutsch** | Tabelle nach Spalte aufteilen | [README.de.md](README.de.md) |
+| 🇪🇸 **Español** | Dividir una hoja por columna | [README.es.md](README.es.md) |
+| 🇮🇹 **Italiano** | Dividere un foglio per colonna | [README.it.md](README.it.md) |
 
 Translations live in [`translations.py`](translations.py) as one dictionary per language. To add another, copy the English block, translate the values, and add an entry to `LANGUAGES` with the flag and the language's own name for itself. Any key you leave out falls back to English, so a partial translation still works.
 
 The file uploader's own labels come from Streamlit itself and stay in English.
 
 ---
-
-## Türkçe
-
-**Bir Excel, CSV veya JSON dosyasını bir sütundaki değerlere göre bölerek çok sayıda dosyaya ayırır.** Tarayıcıda çalışır, kurulum ve makro gerektirmez.
-
-40.000 satırlık bir satış tablonuz ve bir `bölge` sütununuz var; her bölgeye ayrı dosya göndermeniz gerekiyor. Excel'de bu kırk kez filtrele-kopyala-yapıştır-kaydet demek. Burada sürükle, tıkla, indir.
-
-- **Tek dosya, her grup için ayrı sekme** — Excel'in makro yazmadan yapamadığı şey. Kırk dosya yerine kırk sekmeli tek bir `.xlsx`. Sekme adları Excel'in 31 karakter sınırına göre kısaltılır ve çakışmalar otomatik çözülür.
-- **Birden fazla sütuna göre bölme** — `bölge` ve `yıl` seçin, her kombinasyon için ayrı grup alın.
-- **Üretmeden önce önizleme** — hangi grup kaç satır, kaç satır atlandı, hepsi indirmeden önce görünür.
-- **İstemediğiniz sütunları çıkarın** — maliyet veya marj sütunları dışarı gitmesin.
-- **Altı dil** — arayüz İngilizce, Türkçe, Fransızca, Almanca, İspanyolca ve İtalyanca. Kenar çubuğunda bayraklarıyla alt alta durur, sayılar da seçtiğiniz dilin biçimine uyar.
-- **Türkçe karakterler** — CSV çıktısı UTF-8 BOM ile yazılır, Excel'de `Ã§` olmaz. Değerlerdeki `/` ve `:` gibi karakterler dosya adına dönüşmeden temizlenir.
 
 ---
 
