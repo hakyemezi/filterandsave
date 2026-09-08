@@ -2,13 +2,14 @@
 # Any key missing from a language falls back to English, so a half finished
 # translation still leaves the app usable.
 
+# Language code -> flag and the language's own name for itself
 LANGUAGES = {
-    "English": "en",
-    "Türkçe": "tr",
-    "Français": "fr",
-    "Deutsch": "de",
-    "Español": "es",
-    "Italiano": "it",
+    "en": ("🇬🇧", "English"),
+    "tr": ("🇹🇷", "Türkçe"),
+    "fr": ("🇫🇷", "Français"),
+    "de": ("🇩🇪", "Deutsch"),
+    "es": ("🇪🇸", "Español"),
+    "it": ("🇮🇹", "Italiano"),
 }
 
 # Languages that write thousands as 1.234 rather than 1,234

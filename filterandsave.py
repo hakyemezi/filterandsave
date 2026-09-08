@@ -11,8 +11,19 @@ st.set_page_config(page_title="Split a spreadsheet by column", page_icon="✂️
 
 # The language has to be picked before any text is written, so the selector
 # comes first. set_page_config cannot be translated, it runs before this.
-language_name = st.sidebar.selectbox("🌐 Language", list(LANGUAGES.keys()))
-language = LANGUAGES[language_name]
+#
+# Every language is listed with its flag rather than hidden behind a dropdown,
+# so a visitor can see their own language without opening anything. Streamlit
+# has already written the new choice into session state by the time this runs,
+# which is why the label can be shown in the language being switched to.
+current_language = st.session_state.get("language", "en")
+
+language = st.sidebar.radio(
+    "🌐 " + TRANSLATIONS[current_language]["language"],
+    list(LANGUAGES.keys()),
+    format_func=lambda code: f"{LANGUAGES[code][0]} {LANGUAGES[code][1]}",
+    key="language",
+)
 
 
 def t(key):

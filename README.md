@@ -23,7 +23,7 @@ You have a sales sheet with 40,000 rows and a `region` column, and you need one 
 
 **Drop columns you do not want to send out.** Choose which columns end up in the output. Useful when the source sheet has cost or margin columns that should not leave the building.
 
-**It speaks your language.** The whole interface is available in English, Turkish, French, German, Spanish and Italian, picked from the sidebar. Numbers follow the convention of the language you choose, so 1,500 rows becomes 1.500 in German and 1 500 in French.
+**It speaks your language.** The whole interface is available in English, Turkish, French, German, Spanish and Italian, listed with flags in the sidebar. Numbers follow the convention of the language you choose, so 1,500 rows becomes 1.500 in German and 1 500 in French.
 
 **It handles the things that break naive scripts.** Values containing `/`, `\`, `:` or `*` are cleaned before they become file or sheet names. Two different values that clean up to the same name are kept apart rather than silently overwriting each other. Empty values can be skipped or kept as their own group. Multi-sheet workbooks let you pick the sheet.
 
@@ -70,7 +70,7 @@ Everything is built in memory, so nothing is written to disk on the server and c
 
 ## Languages
 
-The interface is translated into six languages, selectable from the sidebar:
+The interface is translated into six languages. All six are listed with their flags in the sidebar, so a visitor can see their own language without opening a menu:
 
 | | |
 |---|---|
@@ -81,7 +81,7 @@ The interface is translated into six languages, selectable from the sidebar:
 | 🇪🇸 **Español** | Dividir una hoja por columna |
 | 🇮🇹 **Italiano** | Dividere un foglio per colonna |
 
-Translations live in [`translations.py`](translations.py) as one dictionary per language. To add another, copy the English block, translate the values and add the language to `LANGUAGES`. Any key you leave out falls back to English, so a partial translation still works.
+Translations live in [`translations.py`](translations.py) as one dictionary per language. To add another, copy the English block, translate the values, and add an entry to `LANGUAGES` with the flag and the language's own name for itself. Any key you leave out falls back to English, so a partial translation still works.
 
 The file uploader's own labels come from Streamlit itself and stay in English.
 
@@ -97,7 +97,7 @@ The file uploader's own labels come from Streamlit itself and stay in English.
 - **Birden fazla sütuna göre bölme** — `bölge` ve `yıl` seçin, her kombinasyon için ayrı grup alın.
 - **Üretmeden önce önizleme** — hangi grup kaç satır, kaç satır atlandı, hepsi indirmeden önce görünür.
 - **İstemediğiniz sütunları çıkarın** — maliyet veya marj sütunları dışarı gitmesin.
-- **Altı dil** — arayüz İngilizce, Türkçe, Fransızca, Almanca, İspanyolca ve İtalyanca. Kenar çubuğundan seçilir, sayılar da seçtiğiniz dilin biçimine uyar.
+- **Altı dil** — arayüz İngilizce, Türkçe, Fransızca, Almanca, İspanyolca ve İtalyanca. Kenar çubuğunda bayraklarıyla alt alta durur, sayılar da seçtiğiniz dilin biçimine uyar.
 - **Türkçe karakterler** — CSV çıktısı UTF-8 BOM ile yazılır, Excel'de `Ã§` olmaz. Değerlerdeki `/` ve `:` gibi karakterler dosya adına dönüşmeden temizlenir.
 
 ---
