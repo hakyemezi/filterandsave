@@ -5,6 +5,7 @@
 [![Streamlit](https://img.shields.io/badge/Streamlit-live%20app-FF4B4B?logo=streamlit&logoColor=white)](https://hakyemezi-filterandsave.streamlit.app)
 [![Python](https://img.shields.io/badge/python-3.9%2B-blue)](https://www.python.org/)
 [![License: MIT](https://img.shields.io/badge/license-MIT-green)](LICENSE)
+[![Languages](https://img.shields.io/badge/interface-6%20languages-blueviolet)](#languages)
 
 You have a sales sheet with 40,000 rows and a `region` column, and you need one file per region to send to each office. In Excel that is a pivot, a filter, a copy, a paste and a save — forty times. Here it is a drag, a click and a download.
 
@@ -21,6 +22,8 @@ You have a sales sheet with 40,000 rows and a `region` column, and you need one 
 **See what you will get before it builds anything.** A table of every group and its row count, plus the number of groups, the rows covered, the largest group and how many rows were skipped. If the split is wrong you find out before you download, not after you open forty files.
 
 **Drop columns you do not want to send out.** Choose which columns end up in the output. Useful when the source sheet has cost or margin columns that should not leave the building.
+
+**It speaks your language.** The whole interface is available in English, Turkish, French, German, Spanish and Italian, picked from the sidebar. Numbers follow the convention of the language you choose, so 1,500 rows becomes 1.500 in German and 1 500 in French.
 
 **It handles the things that break naive scripts.** Values containing `/`, `\`, `:` or `*` are cleaned before they become file or sheet names. Two different values that clean up to the same name are kept apart rather than silently overwriting each other. Empty values can be skipped or kept as their own group. Multi-sheet workbooks let you pick the sheet.
 
@@ -65,6 +68,25 @@ Everything is built in memory, so nothing is written to disk on the server and c
 
 ---
 
+## Languages
+
+The interface is translated into six languages, selectable from the sidebar:
+
+| | |
+|---|---|
+| 🇬🇧 **English** | Split a spreadsheet by column |
+| 🇹🇷 **Türkçe** | Tabloyu sütuna göre böl |
+| 🇫🇷 **Français** | Diviser un tableau par colonne |
+| 🇩🇪 **Deutsch** | Tabelle nach Spalte aufteilen |
+| 🇪🇸 **Español** | Dividir una hoja por columna |
+| 🇮🇹 **Italiano** | Dividere un foglio per colonna |
+
+Translations live in [`translations.py`](translations.py) as one dictionary per language. To add another, copy the English block, translate the values and add the language to `LANGUAGES`. Any key you leave out falls back to English, so a partial translation still works.
+
+The file uploader's own labels come from Streamlit itself and stay in English.
+
+---
+
 ## Türkçe
 
 **Bir Excel, CSV veya JSON dosyasını bir sütundaki değerlere göre bölerek çok sayıda dosyaya ayırır.** Tarayıcıda çalışır, kurulum ve makro gerektirmez.
@@ -75,6 +97,7 @@ Everything is built in memory, so nothing is written to disk on the server and c
 - **Birden fazla sütuna göre bölme** — `bölge` ve `yıl` seçin, her kombinasyon için ayrı grup alın.
 - **Üretmeden önce önizleme** — hangi grup kaç satır, kaç satır atlandı, hepsi indirmeden önce görünür.
 - **İstemediğiniz sütunları çıkarın** — maliyet veya marj sütunları dışarı gitmesin.
+- **Altı dil** — arayüz İngilizce, Türkçe, Fransızca, Almanca, İspanyolca ve İtalyanca. Kenar çubuğundan seçilir, sayılar da seçtiğiniz dilin biçimine uyar.
 - **Türkçe karakterler** — CSV çıktısı UTF-8 BOM ile yazılır, Excel'de `Ã§` olmaz. Değerlerdeki `/` ve `:` gibi karakterler dosya adına dönüşmeden temizlenir.
 
 ---
