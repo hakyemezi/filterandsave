@@ -22,7 +22,7 @@ git clone https://github.com/hakyemezi/filterandsave.git
 ```
 Navigate to the cloned repository
 ```sh
-cd https://github.com/hakyemezi/filterandsave.git
+cd filterandsave
 ```
 Install the required Python libraries:
 ```sh
