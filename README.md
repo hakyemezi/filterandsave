@@ -94,3 +94,13 @@ The file uploader's own labels come from Streamlit itself and stay in English.
 ## License
 
 [MIT](LICENSE)
+
+## Reliability and limits
+
+Parsing, grouping and export helpers live in `splitter.py`, independently of Streamlit. Output names are unique across case differences, sanitized labels, truncation and existing numeric suffixes. CSV input supports automatic or explicit separators and UTF-8, Turkish Windows-1254 or Latin-1 encoding.
+
+The app rejects empty/corrupt files with a readable error. Limits: 25 MiB uploaded, 100 MiB declared expanded XLSX content, 200,000 rows, 2 million cells and 500 groups. These reduce accidental memory pressure; exports still run in memory and the limits are not a hard process-memory guarantee.
+
+Run offline regression tests with `python -m pip install pytest` and `python -m pytest -q tests`. Tests read generated Excel/ZIP outputs back and verify that colliding group names do not lose records.
+
+A GitHub Actions example is provided at `docs/ci-tests.example.yml`. It is not active: enabling it requires copying it to `.github/workflows/tests.yml` with credentials that can manage workflows. Local tests use the commands above.
