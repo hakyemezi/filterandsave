@@ -92,3 +92,11 @@ Dosya yükleme alanının kendi etiketleri Streamlit'ten gelir ve İngilizce kal
 ## Lisans
 
 [MIT](LICENSE)
+
+## Güvenilirlik ve sınırlar
+
+Dosya okuma, gruplama ve çıktı üretimi `splitter.py` içinde arayüzden ayrılmıştır. Temizlenmiş adlar, büyük/küçük harfler, kısaltılmış adlar ve mevcut sayısal ekler arasında çakışma önlenir. CSV için ayırıcı ve kodlama seçilebilir. Boş veya bozuk dosyalar anlaşılır hata verir.
+
+Sınırlar: 25 MiB yükleme, XLSX içinde 100 MiB açılmış içerik, 200.000 satır, 2 milyon hücre ve 500 grup. Çıktılar hâlâ bellekte üretilir; bunlar kesin bellek kullanım garantisi değildir.
+
+Testler: `python -m pip install pytest` ardından `python -m pytest -q tests`.

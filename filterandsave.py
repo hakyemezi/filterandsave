@@ -1,9 +1,8 @@
 import streamlit as st
 import pandas as pd
-import zipfile
 import io
 import os
-import re
+from splitter import read_uploaded_file, build_groups, build_output, validate_upload
 
 from translations import LANGUAGES, TRANSLATIONS, DOT_SEPARATOR, SPACE_SEPARATOR
 
@@ -42,53 +41,6 @@ def number(value):
     return text
 
 
-def safe_name(value):
-    # Turn a cell value into a name that is safe to use as a file name
-    name = re.sub(r'[\\/:*?"<>|]', "_", str(value)).strip()
-    return (name or "unnamed")[:100]
-
-
-def sheet_name(value, used):
-    # Excel sheet names are limited to 31 characters, cannot contain : \ / ? * [ ]
-    # and have to be unique inside the workbook
-    name = re.sub(r'[\\/:*?\[\]]', "_", str(value)).strip()[:31] or "unnamed"
-    if name in used:
-        used[name] += 1
-        suffix = f"_{used[name]}"
-        name = name[:31 - len(suffix)] + suffix
-    else:
-        used[name] = 1
-    return name
-
-
-def read_uploaded_file(file_bytes, file_name, sheet):
-    # Read whichever format was uploaded into a DataFrame
-    file_type = os.path.splitext(file_name)[1].lower()
-    buffer = io.BytesIO(file_bytes)
-
-    if file_type == ".xlsx":
-        return pd.read_excel(buffer, sheet_name=sheet)
-    elif file_type == ".csv":
-        return pd.read_csv(buffer)
-    elif file_type == ".json":
-        return pd.read_json(buffer)
-    return None
-
-
-def build_groups(df, split_columns, keep_columns, drop_empty):
-    # Split the frame into one group per unique combination of the chosen columns
-    frame = df.dropna(subset=split_columns) if drop_empty else df.copy()
-
-    groups = []
-    for keys, group in frame.groupby(split_columns, dropna=False, sort=True):
-        if not isinstance(keys, tuple):
-            keys = (keys,)
-        label = " - ".join(safe_name(key) for key in keys)
-        groups.append((label, group[keep_columns]))
-
-    return groups
-
-
 st.title(t("title"))
 st.caption(t("caption"))
 
@@ -99,14 +51,24 @@ if uploaded_file is not None:
     file_bytes = uploaded_file.getvalue()
     file_type = os.path.splitext(uploaded_file.name)[1].lower()
 
-    # An Excel file can hold several sheets, so ask which one to work on
     sheet = 0
-    if file_type == ".xlsx":
-        sheet_names = pd.ExcelFile(io.BytesIO(file_bytes)).sheet_names
-        if len(sheet_names) > 1:
-            sheet = st.selectbox(t("sheet_pick"), sheet_names)
-
-    df = read_uploaded_file(file_bytes, uploaded_file.name, sheet)
+    separator, encoding = None, 'utf-8-sig'
+    try:
+        validate_upload(file_bytes, uploaded_file.name)
+        if file_type == '.xlsx':
+            with pd.ExcelFile(io.BytesIO(file_bytes)) as workbook:
+                sheet_names = workbook.sheet_names
+            if len(sheet_names) > 1:
+                sheet = st.selectbox(t('sheet_pick'), sheet_names)
+        elif file_type == '.csv':
+            separator = st.selectbox(t('csv_separator'), [None, ',', ';', '\t', '|'],
+                                     format_func=lambda value: t('automatic') if value is None else repr(value))
+            encoding = st.selectbox(t('csv_encoding'), ['utf-8-sig', 'cp1254', 'latin-1'])
+        df = read_uploaded_file(file_bytes, uploaded_file.name, sheet,
+                                separator=separator, encoding=encoding)
+    except Exception as error:
+        st.error(t('read_error').format(error=str(error)))
+        st.stop()
 
     st.success(t("loaded").format(rows=number(len(df)), cols=len(df.columns)))
     with st.expander(t("preview")):
@@ -137,7 +99,11 @@ if uploaded_file is not None:
             st.warning(t("keep_warn"))
             st.stop()
 
-        groups = build_groups(df, split_columns, keep_columns, drop_empty)
+        try:
+            groups = build_groups(df, split_columns, keep_columns, drop_empty)
+        except ValueError as error:
+            st.error(t('read_error').format(error=str(error)))
+            st.stop()
 
         if not groups:
             st.warning(t("no_groups"))
@@ -180,44 +146,15 @@ if uploaded_file is not None:
 
             with st.spinner(t("building").format(n=number(len(groups)))):
 
-                if delivery == 0:
-                    output = io.BytesIO()
-                    used = {}
-                    with pd.ExcelWriter(output, engine="openpyxl") as writer:
-                        for label, group in groups:
-                            group.to_excel(writer, sheet_name=sheet_name(label, used), index=False)
-
-                    st.download_button(
-                        t("dl_workbook"),
-                        output.getvalue(),
-                        file_name="split.xlsx",
-                        mime="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-                    )
-
-                else:
-                    zip_buffer = io.BytesIO()
-                    used_names = {}
-
-                    with zipfile.ZipFile(zip_buffer, "w", zipfile.ZIP_DEFLATED) as zip_file:
-                        for label, group in groups:
-                            # Two labels can clean up to the same name, so keep them apart
-                            name = safe_name(label)
-                            used_names[name] = used_names.get(name, 0) + 1
-                            if used_names[name] > 1:
-                                name = f"{name}_{used_names[name]}"
-
-                            if delivery == 2:
-                                zip_file.writestr(f"{name}.csv", group.to_csv(index=False).encode("utf-8-sig"))
-                            else:
-                                excel_buffer = io.BytesIO()
-                                group.to_excel(excel_buffer, index=False)
-                                zip_file.writestr(f"{name}.xlsx", excel_buffer.getvalue())
-
-                    st.download_button(
-                        t("dl_zip"),
-                        zip_buffer.getvalue(),
-                        file_name="split.zip",
-                        mime="application/zip",
-                    )
-
-            st.success(t("ready"))
+                try:
+                    output = build_output(groups, delivery)
+                except Exception as error:
+                    st.error(t('read_error').format(error=str(error)))
+                    st.stop()
+                st.download_button(
+                    t('dl_workbook') if delivery == 0 else t('dl_zip'), output,
+                    file_name='split.xlsx' if delivery == 0 else 'split.zip',
+                    mime='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+                         if delivery == 0 else 'application/zip',
+                )
+            st.success(t('ready'))

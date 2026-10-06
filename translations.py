@@ -246,3 +246,17 @@ TRANSLATIONS = {
         "ready": "Fatto.",
     },
 }
+
+
+# File parsing controls and readable errors for each supported UI language.
+_FILE_MESSAGES = {
+    'en': ('CSV separator', 'CSV encoding', 'Automatic', 'Could not process the file: {error}'),
+    'tr': ('CSV ayırıcı', 'CSV kodlama', 'Otomatik', 'Dosya işlenemedi: {error}'),
+    'de': ('CSV-Trennzeichen', 'CSV-Kodierung', 'Automatisch', 'Datei konnte nicht verarbeitet werden: {error}'),
+    'es': ('Separador CSV', 'Codificación CSV', 'Automático', 'No se pudo procesar el archivo: {error}'),
+    'fr': ('Séparateur CSV', 'Encodage CSV', 'Automatique', 'Impossible de traiter le fichier : {error}'),
+    'it': ('Separatore CSV', 'Codifica CSV', 'Automatico', 'Impossibile elaborare il file: {error}'),
+}
+for _lang, _values in _FILE_MESSAGES.items():
+    TRANSLATIONS[_lang].update(dict(zip(
+        ('csv_separator', 'csv_encoding', 'automatic', 'read_error'), _values)))
